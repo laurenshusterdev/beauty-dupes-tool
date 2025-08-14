@@ -5,6 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Beauty Dupe Finder</title>
     <meta name="description" content="Find luxury beauty dupes that save 60-90% with 85-95% performance">
+    
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'GA_MEASUREMENT_ID');
+    </script>
+    
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Cormorant+Garamond:wght@300;400;500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * {
@@ -1076,16 +1086,7 @@
                 sephoraLink: 'https://www.sephora.com/product/lactic-acid-10-ha-P455976',
                 ultaLink: 'https://www.ulta.com/p/lactic-acid-10-ha-pimprod2013387'
             },
-            {
-                category: 'skincare',
-                luxury: { name: 'Tatcha The Dewy Skin Cream', price: 78 },
-                dupe: { name: 'Trader Joe\'s Ultra Hydrating Gel', price: 9, performance: 75 },
-                pros: 'Water-based with HA, incredible value, similar texture',
-                cons: 'Simpler ingredient list, no Japanese botanicals',
-                amazonLink: 'https://www.amazon.com/dp/B08YJBQ2FG?tag=laurenslis09f-20',
-                sephoraLink: 'https://www.sephora.com/brand/traders-joes',
-                ultaLink: 'https://www.ulta.com/brand/traders-joes'
-            },
+
             {
                 category: 'skincare',
                 luxury: { name: 'Laneige Lip Sleeping Mask', price: 24 },
@@ -1172,7 +1173,7 @@
                         </div>
                         
                         <div class="buy-buttons">
-                            <a href="${item.amazonLink}" class="buy-button dupe-button" target="_blank">
+                            <a href="${item.amazonLink}" class="buy-button dupe-button" target="_blank" data-product="${item.dupe.name}" data-price="${item.dupe.price}">
                                 Shop Dupe — $${item.dupe.price}
                             </a>
                         </div>
@@ -1214,14 +1215,40 @@
             });
         }
 
+        // Track clicks and handle errors
+        document.addEventListener('click', (e) => {
+            if (e.target.classList.contains('buy-button')) {
+                const productName = e.target.dataset.product;
+                const price = e.target.dataset.price;
+                
+                // Track the click for analytics
+                console.log('Product clicked:', productName, 'Price:', price);
+                
+                // Optional: Send to Google Analytics if configured
+                if (typeof gtag !== 'undefined') {
+                    gtag('event', 'affiliate_click', {
+                        'product_name': productName,
+                        'price': price,
+                        'event_category': 'engagement'
+                    });
+                }
+                
+                // Handle potential broken links
+                setTimeout(() => {
+                    // This would catch if the link failed to open
+                    // You could implement a fallback here
+                }, 100);
+            }
+        });
+
         function requestDupe() {
             const message = `Hi! I'd love to request a dupe for a product. Here are the details:%0A%0AProduct: %0ABrand: %0APrice: %0A%0AThanks!`;
             window.open(`mailto:doitdupebeauty@gmail.com?subject=Dupe Request&body=${message}`);
         }
 
         function shareFeedback() {
-            const message = `Hi! I'd like to share feedback about the Beauty Dupe Finder:%0A%0AFeedback: %0A%0AThanks!`;
-            window.open(`mailto:doitdupebeauty@gmail.com?subject=Beauty Dupe Finder Feedback&body=${message}`);
+            const message = `Beta Feedback:%0A%0AWhat I loved: %0A%0AWhat needs work: %0A%0ASuggested dupes: %0A%0AOverall rating (1-10): `;
+            window.open(`mailto:doitdupebeauty@gmail.com?subject=Beta Feedback&body=${message}`);
         }
 
         function shareApp() {
