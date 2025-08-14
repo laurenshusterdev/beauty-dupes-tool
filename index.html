@@ -1,0 +1,1098 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beauty Dupe Finder</title>
+    <meta name="description" content="Find luxury beauty dupes that save 60-90% with 85-95% performance">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: #fafafa;
+            min-height: 100vh;
+            color: #000;
+            line-height: 1.4;
+        }
+
+        .app {
+            max-width: 400px;
+            margin: 0 auto;
+            background: #fff;
+            min-height: 100vh;
+            position: relative;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+
+        .header {
+            background: #000;
+            color: #fff;
+            padding: 30px 20px 25px;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header h1 {
+            font-size: 1.8rem;
+            margin-bottom: 8px;
+            font-weight: 300;
+            letter-spacing: 0.5px;
+        }
+
+        .header p {
+            font-size: 0.85rem;
+            opacity: 0.8;
+            font-weight: 300;
+        }
+
+        .search-container {
+            padding: 25px 20px 20px;
+            background: #fff;
+            border-bottom: 1px solid #e8e8e8;
+        }
+
+        .search-box {
+            width: 100%;
+            padding: 15px 20px;
+            border: 1px solid #ddd;
+            border-radius: 0;
+            font-size: 16px;
+            background: #fff;
+            transition: border-color 0.2s ease;
+        }
+
+        .search-box:focus {
+            outline: none;
+            border-color: #000;
+        }
+
+        .search-box::placeholder {
+            color: #999;
+            font-weight: 300;
+        }
+
+        .quick-filters {
+            display: flex;
+            gap: 12px;
+            padding: 15px 20px 25px;
+            overflow-x: auto;
+            background: #fff;
+            border-bottom: 1px solid #e8e8e8;
+        }
+
+        .filter-chip {
+            background: #fff;
+            border: 1px solid #ddd;
+            padding: 10px 18px;
+            border-radius: 0;
+            font-size: 12px;
+            white-space: nowrap;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 400;
+        }
+
+        .filter-chip.active {
+            background: #000;
+            color: #fff;
+            border-color: #000;
+        }
+
+        .filter-chip:hover {
+            border-color: #000;
+        }
+
+        .dupe-card {
+            margin: 0 20px 30px;
+            background: #fff;
+            border: 1px solid #e8e8e8;
+            overflow: hidden;
+        }
+
+        .dupe-header {
+            background: #000;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .dupe-header h3 {
+            font-size: 15px;
+            margin-bottom: 8px;
+            font-weight: 400;
+            line-height: 1.3;
+        }
+
+        .savings-badge {
+            background: #fff;
+            color: #000;
+            padding: 6px 14px;
+            font-size: 11px;
+            display: inline-block;
+            margin-top: 8px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .product-comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1px;
+            background: #e8e8e8;
+        }
+
+        .product-side {
+            background: #fff;
+            padding: 20px;
+        }
+
+        .product-type {
+            font-size: 9px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+
+        .luxury-type {
+            color: #666;
+        }
+
+        .dupe-type {
+            color: #000;
+        }
+
+        .product-name {
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 8px;
+            line-height: 1.3;
+            color: #000;
+        }
+
+        .product-price {
+            font-size: 18px;
+            font-weight: 300;
+            margin-bottom: 12px;
+        }
+
+        .luxury-price {
+            color: #666;
+        }
+
+        .dupe-price {
+            color: #000;
+            font-weight: 500;
+        }
+
+        .performance-bar {
+            background: #f5f5f5;
+            height: 4px;
+            margin: 12px 0 8px;
+            overflow: hidden;
+        }
+
+        .performance-fill {
+            height: 100%;
+            background: #000;
+        }
+
+        .performance-text {
+            font-size: 10px;
+            color: #999;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .buy-buttons {
+            padding: 20px;
+            display: grid;
+            gap: 12px;
+            background: #fafafa;
+        }
+
+        .buy-button {
+            display: block;
+            text-align: center;
+            padding: 15px 20px;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 12px;
+            transition: all 0.2s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border: 1px solid transparent;
+        }
+
+        .buy-button:active {
+            transform: translateY(1px);
+        }
+
+        .luxury-button {
+            background: #fff;
+            color: #666;
+            border-color: #ddd;
+        }
+
+        .dupe-button {
+            background: #000;
+            color: #fff;
+            border-color: #000;
+        }
+
+        .dupe-button:hover {
+            background: #333;
+        }
+
+        .secondary-buttons {
+            display: grid; 
+            grid-template-columns: 1fr 1fr; 
+            gap: 8px; 
+            margin-top: 12px;
+        }
+
+        .secondary-button {
+            background: #fff; 
+            color: #666; 
+            font-size: 10px; 
+            padding: 10px 8px;
+            border: 1px solid #ddd;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .secondary-button:hover {
+            border-color: #000;
+            color: #000;
+        }
+
+        .pros-cons {
+            padding: 25px 20px;
+            font-size: 13px;
+            background: #f8f8f8;
+            border-top: 1px solid #e8e8e8;
+            border-bottom: 1px solid #e8e8e8;
+        }
+
+        .pros {
+            color: #000;
+            margin-bottom: 15px;
+            line-height: 1.5;
+            font-weight: 500;
+        }
+
+        .cons {
+            color: #666;
+            line-height: 1.5;
+            font-weight: 500;
+        }
+
+        .pros strong, .cons strong {
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 11px;
+            letter-spacing: 0.5px;
+        }
+
+        .feedback-section {
+            position: fixed;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #fff;
+            border-top: 1px solid #e8e8e8;
+            padding: 20px;
+            max-width: 400px;
+            width: 100%;
+            z-index: 200;
+            box-shadow: 0 -5px 20px rgba(0,0,0,0.1);
+        }
+
+        .feedback-disclaimer {
+            font-size: 9px; 
+            color: #999; 
+            text-align: center; 
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .feedback-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 8px;
+        }
+
+        .feedback-btn {
+            background: #000;
+            color: #fff;
+            border: none;
+            padding: 12px 8px;
+            font-size: 10px;
+            font-weight: 500;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: background 0.2s ease;
+        }
+
+        .feedback-btn:hover {
+            background: #333;
+        }
+
+        .share-btn {
+            background: #fff;
+            color: #000;
+            border: 1px solid #000;
+        }
+
+        .share-btn:hover {
+            background: #000;
+            color: #fff;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 60px 20px;
+            color: #999;
+        }
+
+        .no-results h3 {
+            font-size: 16px;
+            margin-bottom: 8px;
+            font-weight: 400;
+            color: #000;
+        }
+
+        .no-results p {
+            font-size: 12px;
+            font-weight: 300;
+        }
+
+        @media (max-width: 350px) {
+            .app {
+                max-width: 100%;
+            }
+            
+            .product-comparison {
+                grid-template-columns: 1fr;
+            }
+            
+            .feedback-section {
+                max-width: 100%;
+            }
+            
+            .header {
+                padding: 25px 15px 20px;
+            }
+            
+            .search-container {
+                padding: 20px 15px 15px;
+            }
+            
+            .dupe-card {
+                margin: 0 15px 25px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app">
+        <div class="header">
+            <h1>Beauty Dupes</h1>
+            <p>Luxury beauty for less</p>
+        </div>
+
+        <div class="search-container">
+            <input type="text" class="search-box" placeholder="Search brands or products" id="searchInput">
+        </div>
+
+        <div class="quick-filters" id="quickFilters">
+            <div class="filter-chip active" data-filter="all">All</div>
+            <div class="filter-chip" data-filter="foundation">Foundation</div>
+            <div class="filter-chip" data-filter="concealer">Concealer</div>
+            <div class="filter-chip" data-filter="lipstick">Lipstick</div>
+            <div class="filter-chip" data-filter="blush">Blush</div>
+            <div class="filter-chip" data-filter="mascara">Mascara</div>
+            <div class="filter-chip" data-filter="eyeshadow">Eyeshadow</div>
+            <div class="filter-chip" data-filter="highlighter">Highlighter</div>
+            <div class="filter-chip" data-filter="primer">Primer</div>
+            <div class="filter-chip" data-filter="bronzer">Bronzer</div>
+            <div class="filter-chip" data-filter="eyeliner">Eyeliner</div>
+            <div class="filter-chip" data-filter="setting_spray">Setting Spray</div>
+            <div class="filter-chip" data-filter="skincare">Skincare</div>
+        </div>
+
+        <div id="dupesList">
+            <!-- Dupes will be dynamically generated here -->
+        </div>
+
+        <div class="no-results hidden" id="noResults">
+            <h3>No matches found</h3>
+            <p>Try a different search term or category</p>
+        </div>
+
+        <div style="height: 140px;"></div> <!-- Spacer for fixed footer -->
+
+        <div class="feedback-section">
+            <div class="feedback-disclaimer">
+                Commissions may be earned from eligible purchases through affiliate links.
+            </div>
+            <div class="feedback-buttons">
+                <button class="feedback-btn" onclick="requestDupe()">Request Dupe</button>
+                <button class="feedback-btn" onclick="shareFeedback()">Share Feedback</button>
+                <button class="feedback-btn share-btn" onclick="shareApp()">Share Tool</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const dupes = [
+            // FOUNDATION
+            {
+                category: 'foundation',
+                luxury: { name: 'Giorgio Armani Luminous Silk', price: 65 },
+                dupe: { name: "L'Oréal True Match Super-Blendable", price: 14, performance: 90 },
+                pros: 'Better shade range, drugstore accessibility, buildable coverage',
+                cons: 'Slightly less luminous finish, needs setting powder',
+                amazonLink: 'https://www.amazon.com/dp/B004U82JYA?tag=laurenslis09f-20',
+                sephoraLink: '',
+                ultaLink: 'https://www.ulta.com/p/true-match-super-blendable-makeup-pimprod2007084'
+            },
+            {
+                category: 'foundation',
+                luxury: { name: 'Estée Lauder Double Wear', price: 47 },
+                dupe: { name: "L'Oréal Infallible Fresh Wear 24HR", price: 15, performance: 85 },
+                pros: 'Added SPF 25, transfer-resistant, 24hr wear claim',
+                cons: 'Slightly thicker consistency, fewer shade options',
+                amazonLink: 'https://www.amazon.com/dp/B07GQGQH9K?tag=laurenslis09f-20',
+                sephoraLink: '',
+                ultaLink: 'https://www.ulta.com/p/infallible-fresh-wear-24hr-foundation-pimprod2013379'
+            },
+            {
+                category: 'foundation',
+                luxury: { name: 'Charlotte Tilbury Airbrush Flawless', price: 67 },
+                dupe: { name: 'e.l.f. Flawless Finish Foundation', price: 10, performance: 88 },
+                pros: 'Amazing coverage, 24-hour wear, incredible value, buildable',
+                cons: 'Limited shade range compared to CT, different undertones',
+                amazonLink: 'https://www.amazon.com/dp/B08YNJHQZS?tag=laurenslis09f-20',
+                sephoraLink: '',
+                ultaLink: 'https://www.ulta.com/p/flawless-finish-foundation-pimprod2019420'
+            },
+            {
+                category: 'foundation',
+                luxury: { name: 'Pat McGrath Sublime Perfection', price: 68 },
+                dupe: { name: 'Revlon ColorStay Combination/Oily', price: 13, performance: 80 },
+                pros: '24hr wear, excellent staying power, buildable coverage',
+                cons: 'Limited shade range, can oxidize on some skin tones',
+                amazonLink: 'https://www.amazon.com/dp/B004MCUQDU?tag=laurenslis09f-20',
+                sephoraLink: '',
+                ultaLink: 'https://www.ulta.com/p/colorstay-makeup-xlsImpprod1590275'
+            },
+            {
+                category: 'foundation',
+                luxury: { name: 'Dior Forever Foundation', price: 52 },
+                dupe: { name: 'CoverGirl Clean Matte BB Cream', price: 9, performance: 75 },
+                pros: 'Light-medium coverage, natural finish, SPF 21',
+                cons: 'Less coverage, different undertones',
+                amazonLink: 'https://www.amazon.com/dp/B00U2YCQF6?tag=laurenslis09f-20',
+                sephoraLink: '',
+                ultaLink: 'https://www.ulta.com/p/clean-matte-bb-cream-xlsImpprod12041239'
+            },
+            {
+                category: 'foundation',
+                luxury: { name: 'Fenty Beauty Pro Filt\'r', price: 40 },
+                dupe: { name: 'Maybelline Super Stay Full Coverage', price: 12, performance: 85 },
+                pros: 'Similar full coverage, 24hr wear, good for oily skin',
+                cons: 'Less shade variety than Fenty, thicker consistency',
+                amazonLink: 'https://www.amazon.com/dp/B075QBQZPX?tag=laurenslis09f-20',
+                sephoraLink: '',
+                ultaLink: 'https://www.ulta.com/p/superstay-full-coverage-foundation-pimprod2010392'
+            },
+            
+            // CONCEALER
+            {
+                category: 'concealer',
+                luxury: { name: 'Tarte Shape Tape', price: 27 },
+                dupe: { name: 'e.l.f. 16HR Camo Concealer', price: 6, performance: 95 },
+                pros: "Reddit's #1 choice, nearly identical coverage, incredible value",
+                cons: 'Sets faster with less working time, fewer shades',
+                amazonLink: 'https://www.amazon.com/dp/B07L9X8QP6?tag=laurenslis09f-20',
+                sephoraLink: '',
+                ultaLink: 'https://www.ulta.com/p/16hr-camo-concealer-pimprod2007355'
+            },
+            {
+                category: 'concealer',
+                luxury: { name: 'NARS Radiant Creamy Concealer', price: 30 },
+                dupe: { name: "L'Oréal Infallible Full Wear", price: 12, performance: 88 },
+                pros: 'Waterproof, 24hr wear, larger size, buildable',
+                cons: 'Slightly less creamy texture, different undertones',
+                amazonLink: 'https://www.amazon.com/dp/B07D7G1Q5L?tag=laurenslis09f-20',
+                sephoraLink: 'https://www.sephora.com/product/infallible-full-wear-concealer-P455969',
+                ultaLink: 'https://www.ulta.com/p/infallible-full-wear-concealer-pimprod2013377'
+            },
+            {
+                category: 'concealer',
+                luxury: { name: 'Charlotte Tilbury Magic Away', price: 34 },
+                dupe: { name: 'Maybelline Instant Age Rewind', price: 9, performance: 83 },
+                pros: 'Brightening effect, easy applicator, drugstore price',
+                cons: 'Less coverage, can crease without powder',
+                amazonLink: 'https://www.amazon.com/dp/B004Y9GTMA?tag=laurenslis09f-20',
+                sephoraLink: 'https://www.sephora.com/product/instant-age-rewind-eraser-dark-circles-concealer-P455970',
+                ultaLink: 'https://www.ulta.com/p/instant-age-rewind-eraser-dark-circles-concealer-xlsImpprod13801017'
+            },
+            {
+                category: 'concealer',
+                luxury: { name: 'Urban Decay All Nighter Concealer', price: 29 },
+                dupe: { name: 'NYX Can\'t Stop Won\'t Stop', price: 11, performance: 86 },
+                pros: 'Similar staying power, full coverage, 24 shades',
+                cons: 'Can be drying, thick consistency',
+                amazonLink: 'https://www.amazon.com/dp/B07FQZM8VL?tag=laurenslis09f-20',
+                sephoraLink: 'https://www.sephora.com/product/cant-stop-wont-stop-concealer-P455971',
+                ultaLink: 'https://www.ulta.com/p/cant-stop-wont-stop-concealer-pimprod2012349'
+            },
+            
+            // LIPSTICK
+            {
+                category: 'lipstick',
+                luxury: { name: 'Charlotte Tilbury Pillow Talk', price: 37 },
+                dupe: { name: 'e.l.f. Srsly Satin Lipstick "Persimmon"', price: 5, performance: 90 },
+                pros: 'Perfect color match, comfortable formula, amazing value, long-wearing',
+                cons: 'Less luxurious packaging, slightly different undertone in certain lights',
+                amazonLink: 'https://www.amazon.com/dp/B08YNJSTUW?tag=laurenslis09f-20',
+                sephoraLink: '',
+                ultaLink: 'https://www.ulta.com/p/srsly-satin-lipstick-pimprod2019430'
+            },
+            {
+                category: 'lipstick',
+                luxury: { name: 'Dior Addict Lip Glow', price: 38 },
+                dupe: { name: 'e.l.f. Glow Reviver Lip Oil', price: 10, performance: 86 },
+                pros: 'Similar glossy finish, nourishing oils, buildable color, great value',
+                cons: 'Less sophisticated scent, different applicator',
+                amazonLink: 'https://www.amazon.com/dp/B08YNJGLOW?tag=laurenslis09f-20',
+                sephoraLink: '',
+                ultaLink: 'https://www.ulta.com/p/glow-reviver-lip-oil-pimprod2019432'
+            },
+            {
+                category: 'lipstick',
+                luxury: { name: 'Tom Ford Lip Color', price: 58 },
+                dupe: { name: 'MAC Amplified Lipstick', price: 22, performance: 86 },
+                pros: 'Similar creamy texture, extensive shade range',
+                cons: 'Missing signature vanilla scent, less luxurious feel',
+                amazonLink: 'https://www.amazon.com/dp/B00426LQMY?tag=laurenslis09f-20',
+                sephoraLink: 'https://www.sephora.com/product/amplified-lipstick-P455972',
+                ultaLink: 'https://www.ulta.com/p/amplified-lipstick-xlsImpprod1590055'
+            },
+            {
+                category: 'lipstick',
+                luxury: { name: 'Pat McGrath MatteTrance', price: 40 },
+                dupe: { name: 'Maybelline Color Sensational', price: 7, performance: 78 },
+                pros: 'Great color range, comfortable matte formula',
+                cons: 'Less pigmented, requires multiple coats',
+                amazonLink: 'https://www.amazon.com/dp/B01N5RJQJ0?tag=laurenslis09f-20',
+                sephoraLink: 'https://www.sephora.com/product/color-sensational-lipstick-P455973',
+                ultaLink: 'https://www.ulta.com/p/color-sensational-lipstick-xlsImpprod13801019'
+            },
+            {
+                category: 'lipstick',
+                luxury: { name: 'YSL Rouge Pur Couture', price: 42 },
+                dupe: { name: "L'Oréal Colour Riche", price: 12, performance: 84 },
+                pros: 'Same parent company, similar formula, luxe feel',
+                cons: 'Different packaging, less shade depth',
+                amazonLink: 'https://www.amazon.com/dp/B004MCTBJ2?tag=laurenslis09f-20',
+                sephoraLink: 'https://www.sephora.com/product/colour-riche-lipstick-P455974',
+                ultaLink: 'https://www.ulta.com/p/colour-riche-lipstick-xlsImpprod1590059'
+            },
+            {
+                category: 'lipstick',
+                luxury: { name: 'Chanel Rouge Allure', price: 45 },
+                dupe: { name: 'Revlon Super Lustrous', price: 9, performance: 80 },
+                pros: 'Classic formula, comfortable wear, widely available',
+                cons: 'Less sophisticated, simpler packaging',
+                amazonLink: 'https://www.amazon.com/dp/B004MCUQDU?tag=laurenslis09f-20',
+                sephoraLink: 'https://www.sephora.com/brand/revlon',
+                ultaLink: 'https://www.ulta.com/p/super-lustrous-lipstick-xlsImpprod1590251'
+            },
+            
+            // BLUSH
+            {
+                category: 'blush',
+                luxury: { name: 'NARS Orgasm', price: 30 },
+                dupe: { name: 'Milani Baked Blush "Luminoso"', price: 11, performance: 95 },
+                pros: 'Legendary 95% color match, superior blendability, larger pan',
+                cons: 'Slightly more shimmery than original, baked formula can be harder',
+                amazonLink: 'https://www.amazon.com/dp/B007ZKSQXA?tag=laurenslis09f-20',
+                sephoraLink: 'https://www.sephora.com/brand/milani',
+                ultaLink: 'https://www.ulta.com/p/baked-blush-xlsImpprod1590049'
+            },
+            {
+                category: 'blush',
+                luxury: { name: 'Rare Beauty Soft Pinch Liquid Blush', price: 25 },
+                dupe: { name: 'e.l.f. Camo Liquid Blush', price: 7, performance: 92 },
+                pros: 'More forgiving for beginners, good shade range, buildable, long-lasting',
+                cons: 'Slightly less pigmented (need 2-3 dots vs 1), different packaging',
+                amazonLink: 'https://www.amazon.com/dp/B08YNJHQZR?tag=laurenslis09f-20',
+                sephoraLink: '',
+                ultaLink: 'https://www.ulta.com/p/camo-liquid-blush-pimprod2015524'
+            },
+            {
+                category: 'blush',
+                luxury: { name: 'Charlotte Tilbury Cheek to Chic', price: 40 },
+                dupe: { name: 'e.l.f. Putty Blush', price: 7, performance: 89 },
+                pros: 'Cream-to-powder formula, highly pigmented, blends beautifully',
+                cons: 'Different texture than original, fewer shade options',
+                amazonLink: 'https://www.amazon.com/dp/B08YNJQRTU?tag=laurenslis09f-20',
+                sephoraLink: '',
+                ultaLink: 'https://www.ulta.com/p/putty-blush-pimprod2019422'
+            },
+            {
+                category: 'blush',
+                luxury: { name: 'Dior Rosy Glow', price: 40 },
+                dupe: { name: 'CoverGirl Cheekers "Classic Pink"', price: 6, performance: 85 },
+                pros: 'Viral TikTok dupe, 85% of effect at 15% price',
+                cons: 'No pH-adjusting technology, different texture',
+                amazonLink: 'https://www.amazon.com/dp/B004Y9GTEO?tag=laurenslis09f-20',
+                sephoraLink: 'https://www.sephora.com/brand/covergirl',
+                ultaLink: 'https://www.ulta.com/p/cheekers-blush-xlsImpprod1590061'
+            },
+            {
+                category: 'blush',
+                luxury: { name: 'Charlotte Tilbury Cheek to Chic', price: 40 },
+                dupe: { name: 'Flower Beauty Blush Bombs', price: 9, performance: 83 },
+                pros: 'Similar buildable formula, beautiful shades',
+                cons: 'Single shade vs duo, different packaging',
+                amazonLink: 'https://www.amazon.com/dp/B07QRZTF9M?tag=laurenslis09f-20',
+                sephoraLink: 'https://www.sephora.com/brand/flower-beauty',
+                ultaLink: 'https://www.ulta.com/p/blush-bombs-color-drops-pimprod2015526'
+            },
+            {
+                category: 'blush',
+                luxury: { name: 'Tarte Amazonian Clay Blush', price: 30 },
+                dupe: { name: 'Milani Rose Powder Blush', price: 9, performance: 88 },
+                pros: 'Long-wearing, beautiful rose shades, great pigmentation',
+                cons: 'Different texture, less color variety',
+                amazonLink: 'https://www.amazon.com/dp/B019GDK98Q?tag=laurenslis09f-20',
+                sephoraLink: 'https://www.sephora.com/brand/milani',
+                ultaLink: 'https://www.ulta.com/p/rose-powder-blush-xlsImpprod14521195'
+            },
+            
+            // MASCARA
+            {
+                category: 'mascara',
+                luxury: { name: 'Too Faced Better Than Sex', price: 29 },
+                dupe: { name: "L'Oréal Lash Paradise", price: 13, performance: 88 },
+                pros: 'Dead ringer with identical brush design, less clumping, half price',
+                cons: 'Slightly wetter formula initially, takes longer to dry',
+                amazonLink: 'https://www.amazon.com/dp/B071VLGQPX?tag=laurenslis09f-20',
+                sephoraLink: 'https://www.sephora.com/product/lash-paradise-mascara-P455970',
+                ultaLink: 'https://www.ulta.com/p/lash-paradise-mascara-pimprod2009393'
+            },
+            {
+                category: 'mascara',
+                luxury: { name: 'Lancôme Définicils', price: 34 },
+                dupe: { name: "L'Oréal Voluminous Original", price: 11, performance: 90 },
+                pros: 'Nearly identical formula (same parent company), non-clumping',
+                cons: 'Different brush shape, less premium packaging',
+                amazonLink: 'https://www.amazon.com/dp/B004MCUQDU?tag=laurenslis09f-20',
+                sephoraLink: 'https://www.sephora.com/product/voluminous-original-mascara-P455971',
+                ultaLink: 'https://www.ulta.com/p/voluminous-original-mascara-xlsImpprod1590077'
+            },
+            {
+                category: 'mascara',
+                luxury: { name: 'YSL Volume Effet Faux Cils', price: 34 },
+                dupe: { name: 'CoverGirl Exhibitionist', price: 7, performance: 81 },
+                pros: 'Bold results, cruelty-free, no flaking',
+                cons: 'Less refined formula, different brush',
+                amazonLink: 'https://www.amazon.com/dp/B075DFHJM2?tag=laurenslis09f-20',
+                sephoraLink: 'https://www.sephora.com/brand/covergirl',
+                ultaLink: 'https://www.ulta.com/p/exhibitionist-mascara-pimprod2013381'
+            },
+            {
+                category: 'mascara',
+                luxury: { name: 'Benefit They\'re Real!', price: 27 },
+                dupe: { name: 'Maybelline Lash Sensational Sky High', price: 13, performance: 85 },
+                pros: 'Lengthening and separating, bamboo extract, easier removal',
+                cons: 'Different wand shape, less dramatic',
+                amazonLink: 'https://www.amazon.com/dp/B08T1WQZPX?tag=laurenslis09f-20',
+                sephoraLink: 'https://www.sephora.com/product/lash-sensational-sky-high-mascara-P455972',
+                ultaLink: 'https://www.ulta.com/p/lash-sensational-sky-high-mascara-pimprod2018667'
+            },
+            {
+                category: 'mascara',
+                luxury: { name: 'Urban Decay Perversion', price: 26 },
+                dupe: { name: "L'Oréal Voluminous X Fiber", price: 12, performance: 84 },
+                pros: 'Similar dramatic black color, fiber technology',
+                cons: 'Can be flaky, different brush design',
+                amazonLink: 'https://www.amazon.com/dp/B00R3C78J4?tag=laurenslis09f-20',
+                sephoraLink: 'https://www.sephora.com/product/voluminous-x-fiber-mascara-P455973',
+                ultaLink: 'https://www.ulta.com/p/voluminous-x-fiber-mascara-xlsImpprod15251355'
+            },
+            
+            // EYESHADOW
+            {
+                category: 'eyeshadow',
+                luxury: { name: 'Urban Decay Naked Heat', price: 55 },
+                dupe: { name: 'e.l.f. Mad for Matte', price: 10, performance: 85 },
+                pros: 'Includes decent brush, great value, good pigmentation',
+                cons: 'Slightly chalkier texture, fewer shades',
+                amazonLink: 'https://www.amazon.com/dp/B075QBQ2DH?tag=laurenslis09f-20',
+                sephoraLink: 'https://www.sephora.com/product/mad-for-matte-eyeshadow-palette-P455974',
+                ultaLink: 'https://www.ulta.com/p/mad-for-matte-eyeshadow-palette-pimprod2007357'
+            },
+            {
+                category: 'eyeshadow',
+                luxury: { name: 'Pat McGrath Mothership', price: 128 },
+                dupe: { name: 'ColourPop Super Shock Shadows', price: 25, performance: 88 },
+                pros: 'Excellent pigmentation, unique formula, affordable',
+                cons: 'Different packaging, fewer special shades',
+                amazonLink: 'https://www.amazon.com/dp/B089QVT5L2?tag=laurenslis09f-20',
+                sephoraLink: 'https://www.sephora.com/brand/colourpop',
+                ultaLink: 'https://www.ulta.com/brand/colourpop'
+            },
+            {
+                category: 'eyeshadow',
+                luxury: { name: 'Charlotte Tilbury Pillow Talk Palette', price: 53 },
+                dupe: { name: 'Makeup Revolution Reloaded Newtrals 2', price: 7, performance: 82 },
+                pros: 'Nearly identical color story, incredible value',
+                cons: 'Less pigmented, requires primer',
+                amazonLink: 'https://www.amazon.com/dp/B07QRZM8LD?tag=laurenslis09f-20',
+                sephoraLink: 'https://www.sephora.com/brand/makeup-revolution',
+                ultaLink: 'https://www.ulta.com/brand/makeup-revolution'
+            },
+            
+            // HIGHLIGHTER
+            {
+                category: 'highlighter',
+                luxury: { name: 'Charlotte Tilbury Hollywood Flawless Filter', price: 49 },
+                dupe: { name: 'e.l.f. Halo Glow Liquid Filter', price: 14, performance: 96 },
+                pros: '96% similarity, contains hyaluronic acid, 8 shades available, viral TikTok favorite',
+                cons: 'Slightly thicker texture, different packaging aesthetic',
+                amazonLink: 'https://www.amazon.com/dp/B08WCT8RHY?tag=laurenslis09f-20',
+                sephoraLink: '',
+                ultaLink: 'https://www.ulta.com/p/halo-glow-liquid-filter-pimprod2019416'
+            },
+            {
+                category: 'highlighter',
+                luxury: { name: 'Glossier Cloud Paint', price: 20 },
+                dupe: { name: 'e.l.f. Putty Bronzer', price: 7, performance: 85 },
+                pros: 'Cream formula, buildable, natural finish, great for contouring',
+                cons: 'More matte than Glossier, different application method',
+                amazonLink: 'https://www.amazon.com/dp/B08YNJPRST?tag=laurenslis09f-20',
+                sephoraLink: '',
+                ultaLink: 'https://www.ulta.com/p/putty-bronzer-pimprod2019424'
+            },
+            {
+                category: 'eyeshadow',
+                luxury: { name: 'Charlotte Tilbury Pillow Talk Palette', price: 53 },
+                dupe: { name: 'e.l.f. New Nude Eyeshadow Palette', price: 10, performance: 87 },
+                pros: 'Nearly identical color story, incredible value, 16 shades vs 12',
+                cons: 'Requires eyeshadow primer, less buttery texture',
+                amazonLink: 'https://www.amazon.com/dp/B07QRZM8LP?tag=laurenslis09f-20',
+                sephoraLink: '',
+                ultaLink: 'https://www.ulta.com/p/new-nude-eyeshadow-palette-pimprod2019426'
+            },
+            {
+                category: 'primer',
+                luxury: { name: 'Smashbox Photo Finish Primer', price: 42 },
+                dupe: { name: 'e.l.f. Pure Skin Super Serum', price: 10, performance: 88 },
+                pros: 'Similar silky texture, pore-blurring effect, skincare benefits, niacinamide',
+                cons: 'Different silicone content, less mattifying for oily skin',
+                amazonLink: 'https://www.amazon.com/dp/B08YNJDQPR?tag=laurenslis09f-20',
+                sephoraLink: '',
+                ultaLink: 'https://www.ulta.com/p/pure-skin-super-serum-pimprod2019418'
+            },
+            {
+                category: 'primer',
+                luxury: { name: 'Too Faced Hangover Primer', price: 36 },
+                dupe: { name: 'e.l.f. Power Grip Primer', price: 10, performance: 91 },
+                pros: 'Sticky base for long wear, hydrating, works under any foundation',
+                cons: 'Can feel tacky if you use too much, different scent',
+                amazonLink: 'https://www.amazon.com/dp/B08YNJPRQW?tag=laurenslis09f-20',
+                sephoraLink: '',
+                ultaLink: 'https://www.ulta.com/p/power-grip-primer-pimprod2019428'
+            },
+            {
+                category: 'highlighter',
+                luxury: { name: 'Fenty Beauty Killawatt', price: 38 },
+                dupe: { name: 'Wet n Wild MegaGlo Highlighting Powder', price: 5, performance: 87 },
+                pros: 'Similar intense glow, buttery texture, viral dupe',
+                cons: 'Less shade variety, different packaging',
+                amazonLink: 'https://www.amazon.com/dp/B073C6Y1PG?tag=laurenslis09f-20',
+                sephoraLink: 'https://www.sephora.com/brand/wet-n-wild',
+                ultaLink: 'https://www.ulta.com/p/megaglo-highlighting-powder-pimprod2013383'
+            },
+            
+            {
+                category: 'bronzer',
+                luxury: { name: 'Charlotte Tilbury Filmstar Bronze & Glow', price: 68 },
+                dupe: { name: 'e.l.f. Putty Bronzer', price: 7, performance: 89 },
+                pros: 'Cream-to-powder formula, buildable, natural finish, incredible value',
+                cons: 'Limited shade range, different packaging, no highlight side',
+                amazonLink: 'https://www.amazon.com/dp/B08YNJBRNZ?tag=laurenslis09f-20',
+                sephoraLink: '',
+                ultaLink: 'https://www.ulta.com/p/putty-bronzer-pimprod2019424'
+            },
+            {
+                category: 'bronzer',
+                luxury: { name: 'Glossier Cloud Paint', price: 20 },
+                dupe: { name: 'e.l.f. Liquid Bronzer', price: 8, performance: 87 },
+                pros: 'Similar gel-cream texture, buildable, natural finish, easy to blend',
+                cons: 'Different shades available, slightly less pigmented',
+                amazonLink: 'https://www.amazon.com/dp/B08YNJLIQD?tag=laurenslis09f-20',
+                sephoraLink: '',
+                ultaLink: 'https://www.ulta.com/p/liquid-bronzer-pimprod2019434'
+            },
+            {
+                category: 'eyeliner',
+                luxury: { name: 'Urban Decay 24/7 Glide-On Eye Pencil', price: 25 },
+                dupe: { name: 'e.l.f. No Budge Retractable Eyeliner', price: 3, performance: 88 },
+                pros: 'Waterproof, smudge-proof, incredible value, multiple shades',
+                cons: 'Less creamy texture, limited color range compared to UD',
+                amazonLink: 'https://www.amazon.com/dp/B08YNJEYEL?tag=laurenslis09f-20',
+                sephoraLink: '',
+                ultaLink: 'https://www.ulta.com/p/no-budge-retractable-eyeliner-pimprod2019436'
+            },
+            {
+                category: 'setting_spray',
+                luxury: { name: 'Urban Decay All Nighter Setting Spray', price: 35 },
+                dupe: { name: 'e.l.f. Stay All Night Setting Spray', price: 10, performance: 85 },
+                pros: 'Long-lasting hold, lightweight feel, great value, travel-friendly',
+                cons: 'Slightly less fine mist, different scent',
+                amazonLink: 'https://www.amazon.com/dp/B08YNJSPRY?tag=laurenslis09f-20',
+                sephoraLink: '',
+                ultaLink: 'https://www.ulta.com/p/stay-all-night-setting-spray-pimprod2019438'
+            },
+            
+            // SKINCARE
+            {
+                category: 'skincare',
+                luxury: { name: 'SK-II Facial Treatment Essence', price: 199 },
+                dupe: { name: 'COSRX Galactomyces 95 Tone Balancing', price: 22, performance: 85 },
+                pros: '95% galactomyces content, K-beauty quality, incredible value',
+                cons: 'Simpler formula, less brand prestige, different bottle',
+                amazonLink: 'https://www.amazon.com/dp/B074C78BVL?tag=laurenslis09f-20',
+                sephoraLink: 'https://www.sephora.com/brand/cosrx',
+                ultaLink: 'https://www.ulta.com/brand/cosrx'
+            },
+            {
+                category: 'skincare',
+                luxury: { name: 'La Mer Crème de la Mer', price: 390 },
+                dupe: { name: 'Nivea Crème (German)', price: 12, performance: 68 },
+                pros: 'Similar thick texture, ultra-moisturizing, fraction of cost',
+                cons: 'Lacks fermented seaweed, heavier feel, different scent',
+                amazonLink: 'https://www.amazon.com/dp/B000052XB8?tag=laurenslis09f-20',
+                sephoraLink: 'https://www.sephora.com/brand/nivea',
+                ultaLink: 'https://www.ulta.com/brand/nivea'
+            },
+            {
+                category: 'skincare',
+                luxury: { name: 'Drunk Elephant C-Firma Vitamin C', price: 82 },
+                dupe: { name: 'The INKEY List Vitamin C Serum', price: 10, performance: 78 },
+                pros: 'Stable vitamin C, affordable, gentle formula',
+                cons: 'Lower concentration, different antioxidant blend',
+                amazonLink: 'https://www.amazon.com/dp/B081V8TM1S?tag=laurenslis09f-20',
+                sephoraLink: 'https://www.sephora.com/product/vitamin-c-serum-P455975',
+                ultaLink: 'https://www.ulta.com/p/vitamin-c-serum-pimprod2013385'
+            },
+            {
+                category: 'skincare',
+                luxury: { name: 'Sunday Riley Good Genes', price: 105 },
+                dupe: { name: 'The Ordinary Lactic Acid 10% + HA', price: 7, performance: 80 },
+                pros: 'Double the acid concentration, superior hydration, unbeatable price',
+                cons: 'Less elegant formula, basic packaging',
+                amazonLink: 'https://www.amazon.com/dp/B06ZXZM8NG?tag=laurenslis09f-20',
+                sephoraLink: 'https://www.sephora.com/product/lactic-acid-10-ha-P455976',
+                ultaLink: 'https://www.ulta.com/p/lactic-acid-10-ha-pimprod2013387'
+            },
+            {
+                category: 'skincare',
+                luxury: { name: 'Tatcha The Dewy Skin Cream', price: 78 },
+                dupe: { name: 'Trader Joe\'s Ultra Hydrating Gel', price: 9, performance: 75 },
+                pros: 'Water-based with HA, incredible value, similar texture',
+                cons: 'Simpler ingredient list, no Japanese botanicals',
+                amazonLink: 'https://www.amazon.com/dp/B08YJBQ2FG?tag=laurenslis09f-20',
+                sephoraLink: 'https://www.sephora.com/brand/traders-joes',
+                ultaLink: 'https://www.ulta.com/brand/traders-joes'
+            },
+            {
+                category: 'skincare',
+                luxury: { name: 'Laneige Lip Sleeping Mask', price: 24 },
+                dupe: { name: 'Burt\'s Bees Overnight Intensive Lip Treatment', price: 8, performance: 82 },
+                pros: 'Similar overnight repair, natural ingredients, wider availability',
+                cons: 'Different texture, less variety in scents',
+                amazonLink: 'https://www.amazon.com/dp/B075QNL6CT?tag=laurenslis09f-20',
+                sephoraLink: 'https://www.sephora.com/product/overnight-intensive-lip-treatment-P455977',
+                ultaLink: 'https://www.ulta.com/p/overnight-intensive-lip-treatment-pimprod2013389'
+            },
+            {
+                category: 'skincare',
+                luxury: { name: 'Rhode Peptide Lip Treatment', price: 18 },
+                dupe: { name: 'e.l.f. Pure Skin Super Lip Balm', price: 6, performance: 84 },
+                pros: 'Similar glossy finish, 66% cost savings, good ingredients',
+                cons: 'Lower peptide concentration, different packaging',
+                amazonLink: 'https://www.amazon.com/dp/B08YNJ8QRS?tag=laurenslis09f-20',
+                sephoraLink: 'https://www.sephora.com/product/pure-skin-super-lip-balm-P479540',
+                ultaLink: 'https://www.ulta.com/p/pure-skin-super-lip-balm-pimprod2019419'
+            },
+            {
+                category: 'skincare',
+                luxury: { name: 'Sol de Janeiro Brazilian Bum Bum Cream', price: 48 },
+                dupe: { name: 'Palmer\'s Brazilian Cocoa Cream', price: 16, performance: 80 },
+                pros: '80% scent match, comparable moisturizing',
+                cons: 'Different consistency, less intense scent',
+                amazonLink: 'https://www.amazon.com/dp/B08YNJQRST?tag=laurenslis09f-20',
+                sephoraLink: 'https://www.sephora.com/brand/palmers',
+                ultaLink: 'https://www.ulta.com/brand/palmers'
+            }
+        ];
+
+        let filteredDupes = [...dupes];
+
+        function renderDupes() {
+            const container = document.getElementById('dupesList');
+            const noResults = document.getElementById('noResults');
+            
+            if (filteredDupes.length === 0) {
+                container.innerHTML = '';
+                noResults.classList.remove('hidden');
+                return;
+            }
+            
+            noResults.classList.add('hidden');
+            
+            container.innerHTML = filteredDupes.map(item => {
+                const savings = Math.round(((item.luxury.price - item.dupe.price) / item.luxury.price) * 100);
+                
+                return `
+                    <div class="dupe-card">
+                        <div class="dupe-header">
+                            <h3 style="font-size: 14px; margin-bottom: 5px;">${item.luxury.name}</h3>
+                            <div class="savings-badge">Save ${savings}% • $${item.luxury.price - item.dupe.price}</div>
+                        </div>
+                        
+                        <div class="product-comparison">
+                            <div class="product-side">
+                                <div class="product-type luxury-type">👑 Original</div>
+                                <div class="product-name">${item.luxury.name}</div>
+                                <div class="product-price luxury-price">$${item.luxury.price}</div>
+                            </div>
+                            
+                            <div class="product-side">
+                                <div class="product-type dupe-type">💎 Dupe</div>
+                                <div class="product-name">${item.dupe.name}</div>
+                                <div class="product-price dupe-price">$${item.dupe.price}</div>
+                                <div class="performance-bar">
+                                    <div class="performance-fill" style="width: ${item.dupe.performance}%"></div>
+                                </div>
+                                <div class="performance-text">${item.dupe.performance}% match</div>
+                            </div>
+                        </div>
+                        
+                        <div class="pros-cons">
+                            <div class="pros">✅ ${item.pros}</div>
+                            <div class="cons">❌ ${item.cons}</div>
+                        </div>
+                        
+                        <div class="buy-buttons">
+                            <a href="${item.amazonLink}" class="buy-button dupe-button" target="_blank">
+                                🛒 Shop Dupe on Amazon - $${item.dupe.price}
+                            </a>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 8px;">
+                                <a href="${item.sephoraLink}" class="buy-button" style="background: #333; color: white; font-size: 12px; padding: 8px;" target="_blank">
+                                    Sephora
+                                </a>
+                                <a href="${item.ultaLink}" class="buy-button" style="background: #ff6b35; color: white; font-size: 12px; padding: 8px;" target="_blank">
+                                    Ulta
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function setupFilters() {
+            // Search functionality
+            document.getElementById('searchInput').addEventListener('input', (e) => {
+                const searchTerm = e.target.value.toLowerCase();
+                filteredDupes = dupes.filter(item => 
+                    item.luxury.name.toLowerCase().includes(searchTerm) ||
+                    item.dupe.name.toLowerCase().includes(searchTerm) ||
+                    item.category.toLowerCase().includes(searchTerm)
+                );
+                renderDupes();
+            });
+
+            // Filter chips
+            document.getElementById('quickFilters').addEventListener('click', (e) => {
+                if (e.target.classList.contains('filter-chip')) {
+                    // Update active state
+                    document.querySelectorAll('.filter-chip').forEach(chip => 
+                        chip.classList.remove('active')
+                    );
+                    e.target.classList.add('active');
+                    
+                    // Filter dupes
+                    const filter = e.target.dataset.filter;
+                    if (filter === 'all') {
+                        filteredDupes = [...dupes];
+                    } else {
+                        filteredDupes = dupes.filter(item => item.category === filter);
+                    }
+                    renderDupes();
+                }
+            });
+        }
+
+        function requestDupe() {
+            const message = `Hi! I'd love to request a dupe for a product. Here are the details:%0A%0AProduct: %0ABrand: %0APrice: %0A%0AThanks!`;
+            window.open(`mailto:doitdupebeauty@gmail.com?subject=Dupe Request&body=${message}`);
+        }
+
+        function shareFeedback() {
+            const message = `Hi! I'd like to share feedback about the Beauty Dupe Finder:%0A%0AFeedback: %0A%0AThanks!`;
+            window.open(`mailto:doitdupebeauty@gmail.com?subject=Beauty Dupe Finder Feedback&body=${message}`);
+        }
+
+        function shareApp() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'Beauty Dupes Finder',
+                    text: 'Check out this amazing tool to find luxury beauty dupes!',
+                    url: window.location.href
+                });
+            } else {
+                const shareText = `Check out this Beauty Dupes Finder! Save 60-90% on luxury beauty: ${window.location.href}`;
+                if (navigator.clipboard) {
+                    navigator.clipboard.writeText(shareText).then(() => {
+                        alert('Share link copied! 📋');
+                    });
+                } else {
+                    alert(`Share this link: ${window.location.href}`);
+                }
+            }
+        }
+
+        // Initialize app
+        document.addEventListener('DOMContentLoaded', () => {
+            renderDupes();
+            setupFilters();
+        });
+    </script>
+</body>
+</html>
