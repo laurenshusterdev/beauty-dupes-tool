@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Beauty Dupe Finder</title>
-    <meta name="description" content="Find luxury beauty dupes that save 60-90% with 85-95% performance">
+    <title>Smart Beauty</title>
+    <meta name="description" content="Smart Beauty - Find luxury beauty alternatives that save 60-90% with 85-95% performance">
     <meta name='impact-site-verification' value='fb86f856-923c-409e-9835-a814919c0012'>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Cormorant+Garamond:wght@300;400;500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
@@ -570,8 +570,8 @@
 <body>
     <div class="app">
         <div class="header">
-            <h1>Beauty Dupes</h1>
-            <p>Luxury beauty for less</p>
+            <h1>Smart Beauty</h1>
+            <p>The Smartest Way to Update Your Makeup Bag</p>
         </div>
 
         <div class="search-container">
@@ -612,7 +612,7 @@
                 Commissions may be earned from eligible purchases through affiliate links. Results are based on community reviews and expert analysis.
             </div>
             <div class="feedback-buttons">
-                <button class="feedback-btn" onclick="requestDupe()">Request Dupe</button>
+                <button class="feedback-btn" onclick="requestDupe()">Request Alternative</button>
                 <button class="feedback-btn" onclick="shareFeedback()">Share Feedback</button>
                 <button class="feedback-btn share-btn" onclick="shareApp()">Share Tool</button>
             </div>
@@ -1216,24 +1216,24 @@
         }
 
         function requestDupe() {
-            const message = `Hi! I'd love to request a dupe for a product. Here are the details:%0A%0AProduct: %0ABrand: %0APrice: %0A%0AThanks!`;
-            window.open(`mailto:doitdupebeauty@gmail.com?subject=Dupe Request&body=${message}`);
+            const message = `Hi! I'd love to request an alternative for a product. Here are the details:%0A%0AProduct: %0ABrand: %0APrice: %0A%0AThanks!`;
+            window.open(`mailto:doitdupebeauty@gmail.com?subject=Product Alternative Request&body=${message}`);
         }
 
         function shareFeedback() {
-            const message = `Hi! I'd like to share feedback about the Beauty Dupe Finder:%0A%0AFeedback: %0A%0AThanks!`;
-            window.open(`mailto:doitdupebeauty@gmail.com?subject=Beauty Dupe Finder Feedback&body=${message}`);
+            const message = `Hi! I'd like to share feedback about Smart Beauty:%0A%0AFeedback: %0A%0AThanks!`;
+            window.open(`mailto:doitdupebeauty@gmail.com?subject=Smart Beauty Feedback&body=${message}`);
         }
 
         function shareApp() {
             if (navigator.share) {
                 navigator.share({
-                    title: 'Beauty Dupes Finder',
-                    text: 'Check out this amazing tool to find luxury beauty dupes!',
+                    title: 'Smart Beauty',
+                    text: 'Check out this amazing tool to find luxury beauty alternatives!',
                     url: window.location.href
                 });
             } else {
-                const shareText = `Check out this Beauty Dupes Finder! Save 60-90% on luxury beauty: ${window.location.href}`;
+                const shareText = `Check out Smart Beauty! Save 60-90% on luxury beauty: ${window.location.href}`;
                 if (navigator.clipboard) {
                     navigator.clipboard.writeText(shareText).then(() => {
                         alert('Share link copied!');
